@@ -16,6 +16,7 @@ from . import pluginstore
 from . import populate
 from . import profile
 from . import visualizations
+from . import furby_input
 from .run_command import run_command
 
 
@@ -533,6 +534,10 @@ class Naomi(object):
         self.conversation = conversation.Conversation(
             self.mic, self.brain
         )
+
+        # initialise the GPIO furby input
+        self.furby_input = furby_input.FurbyInput()
+
 
     def settings(self):
         _ = self.gettext
