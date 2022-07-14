@@ -17,6 +17,7 @@ from . import populate
 from . import profile
 from . import visualizations
 from . import furby_input
+from . import furby_output
 from .run_command import run_command
 
 
@@ -535,8 +536,11 @@ class Naomi(object):
             self.mic, self.brain
         )
 
-        # initialise the GPIO furby input
+        # initialise the GPIO furby input and output
         self.furby_input = furby_input.FurbyInput()
+        self.furby_output = furby_output.FurbyOutput()
+
+        self.furby_output.do_movement(furby_output.Movement.Talk)
 
 
     def settings(self):

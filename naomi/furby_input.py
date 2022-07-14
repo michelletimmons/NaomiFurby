@@ -1,6 +1,3 @@
-# ----------------------------------------------------------------
-# import libraries
-# ----------------------------------------------------------------
 
 import pigpio           # http://abyz.co.uk/rpi/pigpio/python.html
 import os
@@ -32,6 +29,9 @@ class FurbyInput:
 
         print('Furby input: init complete')
 
+    # -----------------------
+    # setup functions
+    # -----------------------
 
     def __tilt_setup(self):
 
@@ -56,6 +56,10 @@ class FurbyInput:
         pi.set_mode(3, pigpio.INPUT)
         pi.set_pull_up_down(3, pigpio.PUD_UP)
         pi.set_glitch_filter(3, 300)
+
+    # ----------------
+    # callbacks
+    # ----------------
 
     def pigpio_tilt_detected(self, gpio, level, tick):
 
