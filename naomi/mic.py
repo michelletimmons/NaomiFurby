@@ -14,6 +14,8 @@ import tempfile
 import threading
 import time
 import wave
+from . import furby_output
+from threading import Thread
 
 
 # global action queue
@@ -46,6 +48,7 @@ class Mic(object):
         plugins,
         tts_engine,
         vad_plugin,
+        furby_out,
         keyword=['NAOMI'],
         print_transcript=False,
         passive_listen=False,
@@ -61,6 +64,7 @@ class Mic(object):
         self.active_stt_engine = active_stt_engine
         self.special_stt_slug = special_stt_slug
         self.plugins = plugins
+        self.furby_out = furby_out
         self._input_device = input_device
         self._output_device = output_device
         self._vad_plugin = vad_plugin
@@ -600,15 +604,44 @@ class Mic(object):
         )
         self.current_thread.start()
 
+    # def say_sync(self, phrase):
+    #     if(profile.get_arg('print_transcript')):
+    #         println(">> {}\n".format(phrase))
+    #     with tempfile.SpooledTemporaryFile() as f:
+    #         f.write(self.tts_engine.say(phrase))
+    #         f.seek(0)
+    #         self._output_device.play_fp(f)
+    #        time.sleep(.2)
+
     def say_sync(self, phrase):
         if(profile.get_arg('print_transcript')):
             println(">> {}\n".format(phrase))
+
+        # start furby movement on a seperate thread
+        t_movement = Thread(target=self.furby_out.do_movement, args=(furby_output.Movement.Talk,))
+        t_movement.keep_moving = True
+        t_movement.start()
+
+        # play the sound on a seperate thread
+        # this allows us to continue monitoring the furby position
+        # I don't know how this might interact with the 'listen_while_talking' mode
+        t_sound = Thread(target=self.play_voice_file, args=(phrase,))
+        t_sound.start()
+
+        # wait for sound thread to finish, then stop the movement thread
+        while True:
+          if (not t_sound.isAlive()):
+              t_movement.keep_moving = False
+              t_movement.join()
+              t_sound.join()
+              break
+
+    def play_voice_file(self, phrase):
         with tempfile.SpooledTemporaryFile() as f:
             f.write(self.tts_engine.say(phrase))
             f.seek(0)
             self._output_device.play_fp(f)
             time.sleep(.2)
-
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)

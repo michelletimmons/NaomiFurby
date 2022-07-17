@@ -497,6 +497,10 @@ class Naomi(object):
         tts_plugin_info = profile.get_arg('plugins').get_plugin(tts_slug, category='tts')
         tts_plugin = tts_plugin_info.plugin_class(tts_plugin_info)
 
+        # initialise the GPIO furby input and output
+        furby_in = furby_input.FurbyInput()
+        furby_out = furby_output.FurbyOutput()
+
         # Initialize Mic
         if use_mic == USE_TEXT_MIC:
             self.mic = local_mic.Mic()
@@ -523,6 +527,7 @@ class Naomi(object):
                 profile.get_arg('plugins'),
                 tts_plugin,
                 vad_plugin,
+                furby_out,
                 keyword=keyword,
                 print_transcript=print_transcript,
                 passive_listen=passive_listen,
@@ -535,12 +540,6 @@ class Naomi(object):
         self.conversation = conversation.Conversation(
             self.mic, self.brain
         )
-
-        # initialise the GPIO furby input and output
-        self.furby_input = furby_input.FurbyInput()
-        self.furby_output = furby_output.FurbyOutput()
-
-        self.furby_output.do_movement(furby_output.Movement.Talk)
 
 
     def settings(self):

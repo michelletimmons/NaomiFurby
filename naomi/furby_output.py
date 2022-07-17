@@ -5,10 +5,7 @@ import pigpio           # http://abyz.co.uk/rpi/pigpio/python.html
 import time
 import random
 import math
-
-# TODO: make these subclasses? Is that a thing?
-# 
-# 
+import threading
 
 class Direction(IntEnum):
     Forward = 1
@@ -210,7 +207,7 @@ class FurbyOutput:
         if self.direction == Direction.Forward:
             self.targetPulse -= overshoot
             if self.targetPulse < 0:
-                self.targetPulse += 208		    
+                self.targetPulse += 208
         else:
             self.targetPulse += overshoot
             if self.targetPulse > 208:
@@ -221,7 +218,7 @@ class FurbyOutput:
         self.motor_furby_on()
     
         try:
-            while not self.targetReached:           
+            while not self.targetReached:
                 pass   
         except KeyboardInterrupt:
             print('go_to_pulse interrupted')
@@ -300,16 +297,15 @@ class FurbyOutput:
 
         # print 'pulsing between ', startPulse, ' and ', endPulse
 
-        # loop the movement 10 times
+        # connect to the main thread, which will tell us when to stop moving
+        t = threading.currentThread()
+
         try:
-            i = 0;
-            while i < 10: 
+            while getattr(t, "keep_moving", True):
                 self.go_to_pulse(startPulse)
-                self.go_to_pulse(endPulse)          
-                i += 1   
+                self.go_to_pulse(endPulse)
         except KeyboardInterrupt:
             print('do_movement interrupted')
-
 
     # ----------------------------------------------------------------
     # functions for creating overshoot datapoints
