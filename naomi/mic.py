@@ -636,6 +636,8 @@ class Mic(object):
               t_sound.join()
               break
 
+        self.furby_out.go_to_pose(furby_output.Pose.Neutral)
+
     def play_voice_file(self, phrase):
         with tempfile.SpooledTemporaryFile() as f:
             f.write(self.tts_engine.say(phrase))

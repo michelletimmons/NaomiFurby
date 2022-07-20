@@ -259,7 +259,7 @@ class FurbyOutput:
 
     def go_to_pose(self, pose):
 
-        go_to_pulse(get_pose_start_pulse(pose))
+        self.go_to_pulse(self.get_pose_start_pulse(pose))
 
     def get_pose_start_pulse(self, pose):
 
@@ -277,7 +277,7 @@ class FurbyOutput:
 
     def get_movement_start_pulse(self, movement):
         switcher = {
-                    Movement.Talk : 170, 
+                    Movement.Talk : 190, 
                     Movement.Dance : 60
         }
         return switcher.get(movement,"Invalid movement")
