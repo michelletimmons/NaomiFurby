@@ -1,0 +1,10 @@
+[Plugin]
+Name = Ambient Furby
+Version = 1.0.0
+License = MIT
+URL = https://github.com/michelletimmons/NaomiFurby
+Description = Uses the furby input and output libraries to provide ambient movement and chatter
+
+[Author]
+Name = Michelle Timmons
+URL = https://github.com/michelletimmons
