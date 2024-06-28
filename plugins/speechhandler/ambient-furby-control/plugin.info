@@ -1,0 +1,10 @@
+[Plugin]
+Name = ambient-furby-control
+Version = 1.0.0
+License = MIT
+URL = https://github.com/michelletimmons/NaomiFurby
+Description = Controls whether the ambient-furby plugin by asking it to sleep/wake
+
+[Author]
+Name = Michelle Timmons
+URL = https://github.com/michelletimmons

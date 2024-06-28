@@ -15,7 +15,7 @@ import random
 #   self._mic - the current microphone
 #   self._brain - the current brain
 #   self.gettext - the current translator
-class MyNotificationClient(plugin.NotificationClientPlugin):
+class AmbientFurby(plugin.NotificationClientPlugin):
     # The gather function is fired every 30 seconds
     def gather(self, last_date):
                
@@ -30,8 +30,8 @@ class MyNotificationClient(plugin.NotificationClientPlugin):
         # TODO: create a speech handler plugin to control these settings
         # e.g. "Jasper go to sleep", "Jasper wake up", "Jasper go to sleep at 8pm", "Jasper wake up at 7am"
 
-        if not(now > today_day_starts and now < today_day_ends):
-            return
+        # if not(now > today_day_starts and now < today_day_ends):
+        #     return
 
         # it's day-time, there is a 1 in 3 chance of some random bantz
         x = random.randint(1,3)
