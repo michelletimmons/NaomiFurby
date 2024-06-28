@@ -19,7 +19,8 @@ try:
     # Why do we have to import sphinxbase.sphinxbase.*?
     # otherwise, when we create pocketsphinx.Decoder.default_config()
     # we get the wrong object for some reason.
-    from sphinxbase.sphinxbase import *
+    # MT 23 June 2024 - after upgrading from buster to bullseye (python 3.9) this import throws an exception
+    # from sphinxbase.sphinxbase import *
 except ImportError:
     pocketsphinx = None
     pocketsphinx_available = False

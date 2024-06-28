@@ -630,7 +630,7 @@ class Mic(object):
 
         # wait for sound thread to finish, then stop the movement thread
         while True:
-          if (not t_sound.isAlive()):
+          if (not t_sound.is_alive()):
               t_movement.keep_moving = False
               t_movement.join()
               t_sound.join()
