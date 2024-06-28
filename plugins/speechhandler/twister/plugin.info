@@ -1,0 +1,10 @@
+[Plugin]
+Name = Twister
+Version = 1.0.0
+License = MIT
+URL = https://github.com/michelletimmons/NaomiFurby
+Description = Play Twister
+
+[Author]
+Name = Michelle Timmons
+URL = https://github.com/michelletimmons
