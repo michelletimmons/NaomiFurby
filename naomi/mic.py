@@ -617,16 +617,25 @@ class Mic(object):
         if(profile.get_arg('print_transcript')):
             println(">> {}\n".format(phrase))
 
-        # start furby movement on a seperate thread
-        t_movement = Thread(target=self.furby_out.do_movement, args=(furby_output.Movement.Talk,))
-        t_movement.keep_moving = True
-        t_movement.start()
+        with tempfile.SpooledTemporaryFile() as f:
+            
+            # generate the output audio into a temporary file
+            f.write(self.tts_engine.say(phrase))
+            f.seek(0)
 
-        # play the sound on a seperate thread
-        # this allows us to continue monitoring the furby position
-        # I don't know how this might interact with the 'listen_while_talking' mode
-        t_sound = Thread(target=self.play_voice_file, args=(phrase,))
-        t_sound.start()
+            # start furby movement on a seperate thread
+            t_movement = Thread(target=self.furby_out.do_movement, args=(furby_output.Movement.Talk,))
+            t_movement.keep_moving = True
+            t_movement.start()
+
+            # play the audio file on a seperate thread
+            # this allows us to continue monitoring the furby position
+            # I don't know how this might interact with the 'listen_while_talking' mode
+            t_sound = Thread(target=self._output_device.play_fp(f))
+            t_sound.start()
+
+            # why sleep?
+            time.sleep(.2)
 
         # wait for sound thread to finish, then stop the movement thread
         while True:
@@ -637,13 +646,6 @@ class Mic(object):
               break
 
         self.furby_out.go_to_pose(furby_output.Pose.Neutral)
-
-    def play_voice_file(self, phrase):
-        with tempfile.SpooledTemporaryFile() as f:
-            f.write(self.tts_engine.say(phrase))
-            f.seek(0)
-            self._output_device.play_fp(f)
-            time.sleep(.2)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
