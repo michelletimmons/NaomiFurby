@@ -117,10 +117,10 @@ class NewsPlugin(plugin.SpeechHandlerPlugin):
             )
             return
         del articles[0]  # fixing "This RSS feed URL is deprecated"
-        text = _('These are the current top headlines...')
+        text = _('These are the current top headlines.')
         text += ' '
-        text += '... '.join(
-            '%d) %s' % (i, a.title)
+        text += '. '.join(
+            '%d. %s' % (i, a.title)
             for i, a in enumerate(articles, start=1)
         )
         mic.say(text)
