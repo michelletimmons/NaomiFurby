@@ -1,0 +1,10 @@
+[Plugin]
+Name = piper-tts
+Version = 1.0.0
+License = MIT
+URL = https://github.com/michelletimmons/NaomiFurby
+Description = A text-to-speech plugin that uses Piper
+
+[Author]
+Name = Michelle Timmons
+URL = https://github.com/michelletimmons
